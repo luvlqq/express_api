@@ -1,27 +1,14 @@
-import http from 'http';
 import express from 'express';
-
+import {userRouter} from "./users/users.js";
 const PORT = 8000;
 const APP = express();
 
-
-APP.all('/hello', (req, res, next) => {
-    console.log('all');
-    next();
+APP.get('/hello', (req, res) => {
+    // res.send('hello!');
+    res.end();
 });
 
-const CALLBACK = (req, res, next) => {
-    console.log('Call back');
-    next();
-}
-
-APP.route('/user')
-    .get('/hello', (req, res) => {
-        res.send('hello!');
-    })
-    .post('/hello',(req,res) => {
-        res.send('hi post')
-    })
+APP.use('/users', userRouter)
 
 APP.listen(PORT, () => {
     console.log(`Server started: http://loclahost:${PORT}`)
