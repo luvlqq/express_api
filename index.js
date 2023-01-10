@@ -1,14 +1,15 @@
 import http from 'http';
+import express from 'express';
 
-
-const HOST = '127.0.0.1';
 const PORT = 8000;
+const APP = express();
 
-const SERVER = http.createServer((req,res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Hi');
+
+APP.get('/hello', (req,res)=> {
+    res.send('hello!');
+})
+
+APP.listen(PORT, ()=> {
+   console.log(`Server started: http://loclahost:${PORT}`)
 });
 
-SERVER.listen(PORT, HOST, ()=>{
-    console.log(`Server started ${HOST}:${PORT}`);
-});
