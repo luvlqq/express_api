@@ -20,6 +20,6 @@ APP.use((err, req, res, next)=> {
 })
 
 APP.listen(PORT, () => {
-    console.log(`Server started: http://loclahost:${PORT}`)
+    console.log(`Server started: http://localhost:${PORT}`)
 });
 
