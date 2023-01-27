@@ -16,7 +16,7 @@ APP.use('/users', userRouter)
 
 APP.use((err, req, res, next)=> {
     console.log(err.message);
-    res.status(500).end(err.message);
+    res.status(500).send(err.message);
 })
 
 APP.listen(PORT, () => {
