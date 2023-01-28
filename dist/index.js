@@ -1,25 +1,19 @@
-import express, {Request, Response, NextFunction} from 'express';
-import {userRouter} from "./users/users.js";
+import express from 'express';
+import { userRouter } from "./users/users.js";
 const PORT = 8000;
 const APP = express();
-
 APP.use((req, res, next) => {
     console.log('Time ', Date.now());
     next();
-})
-
+});
 APP.get('/hello', (req, res) => {
     throw new Error('Error');
 });
-
-APP.use('/users', userRouter)
-
-APP.use((err: Error, req: Request, res: Response, next: NextFunction)=> {
+APP.use('/users', userRouter);
+APP.use((err, req, res, next) => {
     console.log(err.message);
     res.status(500).send(err.message);
-})
-
-APP.listen(PORT, () => {
-    console.log(`Server started: http://localhost:${PORT}`)
 });
-
+APP.listen(PORT, () => {
+    console.log(`Server started: http://localhost:${PORT}`);
+});
