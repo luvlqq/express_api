@@ -2,12 +2,18 @@ import {BaseController} from "../common/base.controller";
 import {LoggerService} from "../logger/logger.service";
 import {NextFunction, Request, Response} from "express";
 import {HTTPError} from "../errors/http-error.class";
+import {inject, injectable} from "inversify";
+import {TYPES} from "../types";
+import {ILogger} from "../logger/loggerInterface";
+import 'reflect-metadata';
+import {IUserController} from "./users.controller.interface";
 
-export class UsersController extends BaseController{
+@injectable()
+export class UsersController extends BaseController implements IUserController{
     constructor(
-        logger: LoggerService
+        @inject(TYPES.ILogger) private loggerService: ILogger
     ) {
-        super(logger);
+        super(loggerService);
         this.bindRoutes([
             {path: '/register', method: 'post', func: this.register },
             {path: '/login', method: 'post', func: this.login },
