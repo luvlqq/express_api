@@ -6,10 +6,16 @@ import { TYPES } from '../types';
 import { ILogger } from '../logger/loggerInterface';
 import 'reflect-metadata';
 import { IUserController } from './users.controller.interface';
+import { UserLoginDto } from './dto/user-login.dto';
+import { UserRegisterDto } from './dto/user-register.dto';
+import { UsersService } from './users.service';
 
 @injectable()
 export class UsersController extends BaseController implements IUserController {
-	constructor(@inject(TYPES.ILogger) private loggerService: ILogger) {
+	constructor(
+		@inject(TYPES.ILogger) private loggerService: ILogger,
+		@inject(TYPES.UserService) private userService: UsersService,
+	) {
 		super(loggerService);
 		this.bindRoutes([
 			{ path: '/register', method: 'post', func: this.register },
@@ -17,11 +23,19 @@ export class UsersController extends BaseController implements IUserController {
 		]);
 	}
 
-	login(req: Request, res: Response, next: NextFunction): void {
+	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
+		console.log(req.body);
 		next(new HTTPError(401, 'Auth Error'));
 	}
-
-	register(req: Request, res: Response, next: NextFunction): void {
-		this.ok(res, 'register');
+	async register(
+		{ body }: Request<{}, {}, UserRegisterDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const result = await this.userService.createUser(body);
+		if (!result) {
+			return next(new HTTPError(422, 'this user has been created'));
+		}
+		this.ok(res, { email: result.email });
 	}
 }
