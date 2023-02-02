@@ -11,7 +11,8 @@
     "lint:fix": "eslint ./src/** --fix",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "generate": "npx prisma generate"
   },
   "repository": {
     "type": "git",
